@@ -1,0 +1,14 @@
+FROM emqx/emqx:v4.0.1
+
+USER emqx
+
+RUN sudo apk update && sudo apk add tzdata
+
+COPY acl.conf /opt/emqx/etc/acl.conf
+
+COPY wait.arm32 /wait
+RUN sudo chmod +x /wait
+RUN sudo chown emqx /wait
+
+## Launch the wait tool and then your application
+CMD sudo chown -R emqx:emqx /opt/emqx && /usr/bin/start.sh
